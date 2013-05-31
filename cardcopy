@@ -1,6 +1,8 @@
 #!/bin/bash
 #
 # cardcopy : a script to copy files from any ($1) device to a directory
+set -e
+
 TARGET=/home/photos        # <---- change this
 MOUNT=/tmp/cardmount       
 DEVNAME=/dev/$1
