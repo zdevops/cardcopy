@@ -1,0 +1,2 @@
+#SUBSYSTEM=="block", ACTION=="add", ENV{DEVTYPE}=="partition", ENV{DEVLINKS}=="*usb*", ENV{DEVNAME}=="/dev/sd[b-c]1", RUN="/usr/local/bin/cardcopy"
+SUBSYSTEM=="block", ACTION=="add", ENV{DEVTYPE}=="partition", ENV{DEVLINKS}=="*usb*", ENV{DEVNAME}=="/dev/sd[b-c]1", RUN+="/usr/bin/systemctl start cardcopy@%k.service"

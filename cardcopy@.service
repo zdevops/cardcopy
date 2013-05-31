@@ -1,0 +1,7 @@
+[Unit]
+Description=Copy Photos
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/cardcopy %I
+

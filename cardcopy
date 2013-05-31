@@ -1,0 +1,47 @@
+#!/bin/bash
+#
+# cardcopy : a script to copy files from any ($1) device to a directory
+TARGET=/home/photos        # <---- change this
+MOUNT=/tmp/cardmount       
+DEVNAME=/dev/$1
+EXT=".*\.\(jpg\|gif\|png\|jpeg\|JPG\|GIF\|PNG\|JPEG\|nef\|NEF\|raw\|RAW\)"
+
+
+logger -t cardcopy "Starting cardcopy on $DEVNAME"
+
+# Next, mount the card (make sure mountpoint is there)
+if [ ! -d "$MOUNT" ]; then
+    mkdir -p "$MOUNT"
+fi
+
+mount $DEVNAME "$MOUNT"
+
+
+# Get the filelist (photos) and the date taken (according to camera)
+LINES=$(find "$MOUNT" -regex $EXT -printf "%TY-%Tm-%Td_%p\n")
+DATES=$(echo "$LINES" | cut -d_ -f1 | uniq)
+
+# First create the directories when missing
+for DATE in $DATES; do
+    mkdir -p "$TARGET/$DATE"
+done
+
+ 
+# Copy/Move the images
+TOT=0
+for LINE in $LINES; do
+    DATE=${LINE%%_*}
+    FILE=${LINE#*_}
+    cp "$FILE" "$TARGET/$DATE"
+    TOT=$(($TOT+1))
+done
+
+
+# Unmount card
+umount $DEVNAME
+
+# Get all the permbits in a steady state
+chmod -R 755 $TARGET	# <-- Change this
+
+logger -t cardcopy "Done, copied $TOT files"
+

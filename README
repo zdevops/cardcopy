@@ -1,0 +1,8 @@
+To install this 'package' copy the files to their respective locations as shown below.
+
+91-cardcopy.rules  	--> /etc/udev/rules.d/
+cardcopy		--> /usr/local/bin
+cardcopy@.service	--> /etc/systemd/system/
+
+Then alter the cardcopy script to your liking......
+
